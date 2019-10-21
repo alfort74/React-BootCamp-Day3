@@ -43,7 +43,11 @@ function App() {
   };
 
   let content = submitted ? (
-    <p> thank you </p>
+    <p>
+      Thanks for joining in! <br />
+      When we're ready to wow you, <br />
+      You'll get an email.
+    </p>
   ) : (
     <FormWrapper onSubmit={handleSubmit}>
       <FormText>
