@@ -63,6 +63,8 @@ function App() {
     button = <Button type="submit" value={status} />;
   } else if (status === "success") {
     button = <Button type="submit" value={`vouch with ${count} others`} />;
+  } else if (status === "failed") {
+    button = <Button type="submit" value="something wrong" />;
   } else {
     button = <Button type="submit" value="I'll vouch for that" />;
   }
