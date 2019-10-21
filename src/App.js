@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import styled from "styled-components";
+import { getResponseCount } from "./backend";
 
 const FormWrapper = styled.form`
   width: 300px;
@@ -25,22 +26,46 @@ const Label = styled.label`
 const Input = styled.input``;
 
 const Button = styled.input`
-  width: 100px;
+  width: 140px;
   margin: 0 auto;
   border: 1px solid #000;
   text-align: center;
   margin-top: 10px;
+  display: block;
 `;
 
 function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  console.log(submitted);
+  const [status, setStatus] = useState("busy");
+  const [count, setCount] = useState(0);
   const handleSubmit = event => {
     event.preventDefault();
     setSubmitted(true);
   };
+
+  useEffect(() => {
+    setStatus("loading");
+    getResponseCount().then(
+      data => {
+        setStatus("success");
+        setCount(data);
+      },
+      error => {
+        setStatus("failed");
+      }
+    );
+  }, []);
+
+  let button;
+  if (status === "loading") {
+    button = <Button type="submit" value={status} />;
+  } else if (status === "success") {
+    button = <Button type="submit" value={`vouch with ${count} others`} />;
+  } else {
+    button = <Button type="submit" value="I'll vouch for that" />;
+  }
 
   let content = submitted ? (
     <p>
@@ -73,7 +98,7 @@ function App() {
           onChange={event => setEmail(event.target.value)}
         />
       </InputBlock>
-      <Button type="submit" value="Submit" />
+      {button}
     </FormWrapper>
   );
   return content;
